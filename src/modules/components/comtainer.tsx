@@ -7,6 +7,7 @@ export function MainContainer({ children, ...other }: ContainerProps) {
         display: "flex",
         flex: "1 1 auto",
         flexDirection: "column",
+        paddingTop: 2,
       }}
       {...other}
     >
