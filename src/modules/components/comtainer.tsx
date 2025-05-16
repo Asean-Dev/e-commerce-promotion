@@ -8,6 +8,7 @@ export function MainContainer({ children, ...other }: ContainerProps) {
         flex: "1 1 auto",
         flexDirection: "column",
         paddingTop: 2,
+        paddingBottom: 2,
       }}
       {...other}
     >

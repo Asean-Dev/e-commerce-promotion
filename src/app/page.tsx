@@ -1,5 +1,5 @@
-import { CheckOutView } from "modules/check-out/view";
+import { ProductsView } from "modules/products/view";
 
 export default function Home() {
-  return <CheckOutView />;
+  return <ProductsView />;
 }
