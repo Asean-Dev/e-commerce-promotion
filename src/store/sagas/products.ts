@@ -105,7 +105,7 @@ function* fetchAllCartCheckOutSaga(): Generator {
           (product) => product.id === item.productId
         );
 
-        if (!product) return null; 
+        if (!product) return null;
 
         return {
           id: product.id,
@@ -114,6 +114,7 @@ function* fetchAllCartCheckOutSaga(): Generator {
           image: product.image,
           price: product.price,
           quantity: item.quantity,
+          category: product.category,
         };
       })
       .filter(Boolean) as IProductsCart[];

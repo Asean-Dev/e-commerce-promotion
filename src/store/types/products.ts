@@ -24,6 +24,7 @@ export interface IProductsCart {
   image: string;
   price: number;
   quantity: number;
+  category: string;
 }
 
 export interface IProductsState {
