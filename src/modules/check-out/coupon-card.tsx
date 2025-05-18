@@ -78,7 +78,9 @@ export function CouponCard({ campaigns, setMyCampaigns }: Props) {
         }}
         onClick={popover.onOpen}
       >
-        Select On-Top Coupon
+        {/* { item.type == "OnTopPoints"
+                      ? "Redeem your points for extra discount"
+                      : `Extra ${item.parameters.percentage}% off on ${item.parameters.category}} */}
         <motion.div
           animate={{ rotate: popover.open ? 180 : 0 }}
           transition={{ duration: 0.3 }}
