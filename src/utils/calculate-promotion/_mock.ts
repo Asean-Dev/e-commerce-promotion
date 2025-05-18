@@ -68,7 +68,7 @@ export const renderCampaignDescription = (campaign: CampaignType) => {
       return `Discount of ${parameters.percentage}% on total price. Code: ${campaign.code}`;
 
     case "OnTopPoints":
-      return `you ${parameters.points} points for additional discount`;
+      return `you have ${parameters.points} points for and additional discount`;
     case "OnTopCategory":
       return `Get ${parameters.percentage}% off on ${parameters.category} category`;
 
