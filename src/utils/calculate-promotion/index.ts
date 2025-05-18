@@ -212,19 +212,16 @@ export function calculateFinalPrice(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    cartPrice = Math.max(0, cartPrice - (cartPrice - total));
+
+    const findPrice = DiscountDetail.reduce(
+      (sum, item) => sum + item.amount,
+      0
+    );
+    cartPrice = Math.max(0, cartPrice - findPrice);
     console.log("debug cartPrice", cartPrice);
-    let basePrice = 0;
-    if (coupon && coupon.type === "CouponPercentage") {
-      basePrice = cartPrice * (1 - coupon.parameters.percentage / 100);
-    }
-
-    if (coupon && coupon.type === "CouponFixed") {
-      basePrice = Math.max(0, cartPrice - coupon.parameters.amount);
-    }
-
+    console.log("debug findPrice", findPrice);
     console.log("debug total", total);
-    const data = applySeasonalDiscount(basePrice, seasonal);
+    const data = applySeasonalDiscount(cartPrice, seasonal);
     total = data.total;
     DiscountDetail.push({
       type: data.type,
