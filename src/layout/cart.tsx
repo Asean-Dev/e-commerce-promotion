@@ -253,7 +253,7 @@ export function Cart({ onOpen, quantity, setQuantityStorageStorage }: Props) {
           <Button
             variant={"contained"}
             onClick={handleBuyNow}
-            disabled={!selectedProductIds.length}
+            disabled={!selectedProductIds.length || quantity == 0}
           >
             Buy Now
           </Button>

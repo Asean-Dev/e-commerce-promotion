@@ -102,10 +102,11 @@ export function ProductsView() {
   return (
     <MainContainer>
       <Stack
-        direction={"row"}
+        direction={"column"}
         justifyContent={"space-between"}
         alignItems={"center"}
         mb={2}
+        spacing={2}
       >
         <Typography variant="h6" width={1} fontWeight={800}>
           Products
