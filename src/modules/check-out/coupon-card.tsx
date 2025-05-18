@@ -22,6 +22,7 @@ type Props = {
 };
 
 export function CouponCard({ campaigns, setMyCampaigns }: Props) {
+  const [titleLabel, setTitleLabel] = useState("Select On-Top Coupon");
   const filterOntop = campaigns.filter(
     (e) => e.type === "OnTopCategory" || e.type === "OnTopPoints"
   );
@@ -49,10 +50,27 @@ export function CouponCard({ campaigns, setMyCampaigns }: Props) {
       );
       return [...filtered, useCoupon];
     });
+    popover.onClose();
   };
 
   useEffect(() => {
     const useCoupon = filterOntop.find((e) => e.id === value);
+
+    switch (useCoupon?.type) {
+      case "OnTopPoints":
+        setTitleLabel("Redeem your points for extra discount");
+        break;
+
+      case "OnTopCategory":
+        setTitleLabel(
+          `Extra ${useCoupon.parameters.percentage}% off on ${useCoupon.parameters.category}`
+        );
+        break;
+      default:
+        setTitleLabel("Select On-Top Coupon");
+        break;
+    }
+
     setMyCampaigns((prev: CampaignType[] | undefined) => {
       if (!useCoupon) return prev ?? [];
       const safePrev = prev ?? [];
@@ -78,9 +96,7 @@ export function CouponCard({ campaigns, setMyCampaigns }: Props) {
         }}
         onClick={popover.onOpen}
       >
-        {/* { item.type == "OnTopPoints"
-                      ? "Redeem your points for extra discount"
-                      : `Extra ${item.parameters.percentage}% off on ${item.parameters.category}} */}
+        {titleLabel}
         <motion.div
           animate={{ rotate: popover.open ? 180 : 0 }}
           transition={{ duration: 0.3 }}
