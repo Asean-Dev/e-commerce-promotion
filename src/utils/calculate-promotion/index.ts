@@ -50,7 +50,7 @@ function applyCouponDiscount(
 function applyOnTopDiscount(
   products: IProductsCart[],
   total: number,
-  campaign: Extract<Campaign, { type: "OnTopCategory" | "OnTopPoints" }>,
+  campaign: Extract<Campaign, { type: "OnTopPoints" | "OnTopCategory" }>,
   coupon:
     | Extract<Campaign, { type: "CouponFixed" | "CouponPercentage" }>
     | undefined
@@ -69,35 +69,37 @@ function applyOnTopDiscount(
         (item) => item.category === category
       );
 
-      let cartPrice = 0;
-      matchedItems.forEach((e) => (cartPrice += e.price));
+      const cartPrice = matchedItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+      const totalCartPrice = products.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
 
-      if (matchedItems) {
-        console.log("debug cartPrice", cartPrice);
-        let price = cartPrice;
-        if (coupon) {
-          if (coupon.type == "CouponPercentage") {
-            price -= cartPrice * (coupon.parameters.percentage / 100);
-          } else {
-            total += coupon.parameters.amount;
-            console.log("debug total", total);
+      let basePrice = cartPrice;
 
-            const proportion = (cartPrice / total) * coupon.parameters.amount;
-            console.log("debug proportion", proportion);
-            console.log("debug percentage", percentage);
-            price = proportion;
-          }
-        }
-        console.log("debug price", price);
+      console.log("debug cartPricecartPrice", cartPrice);
 
-        const discount = price * (percentage / 100);
-        return {
-          total: total - discount,
-          amount: discount,
-          type: campaign.type,
-          campaign,
-        };
+      if (coupon && coupon.type === "CouponFixed") {
+        const proportionDiscount =
+          (cartPrice / totalCartPrice) * coupon.parameters.amount;
+        basePrice = Math.max(0, cartPrice - proportionDiscount);
       }
+
+      if (coupon && coupon.type === "CouponPercentage") {
+        basePrice = cartPrice * (1 - coupon.parameters.percentage / 100);
+      }
+
+      const discount = basePrice * (percentage / 100);
+
+      return {
+        total: totalCartPrice - discount,
+        amount: discount,
+        type: campaign.type,
+        campaign,
+      };
     }
 
     case "OnTopPoints": {
@@ -134,18 +136,17 @@ function applySeasonalDiscount(
 
 export function calculateFinalPrice(
   cart: IProductsCart[],
-  campaigns: Campaign[],
+  campaigns: Campaign[] | undefined,
   couponCode?: string
 ): FinalPriceResult {
-  let total = cart.reduce((sum, item) => sum + item.price, 0);
+  let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  console.log("debug total", total);
+  console.log("debug cart", cart);
 
   let DiscountDetail: DiscountDetailType[] = [];
 
-  const coupon = campaigns.find(
-    (c) =>
-      (c.type === "CouponFixed" || c.type === "CouponPercentage") &&
-      "code" in c &&
-      c.code === couponCode
+  const coupon = campaigns?.find(
+    (c) => c.type === "CouponFixed" || c.type === "CouponPercentage"
   ) as
     | Extract<Campaign, { type: "CouponFixed" | "CouponPercentage" }>
     | undefined;
@@ -156,11 +157,11 @@ export function calculateFinalPrice(
 
   const isOnTopPoints = (c: Campaign) => c.type === "OnTopPoints";
 
-  const onTop = campaigns.find(
+  const onTop = campaigns?.find(
     (c) => isOnTopCategory(c) || isOnTopPoints(c)
   ) as Extract<Campaign, { type: "OnTopCategory" | "OnTopPoints" }> | undefined;
 
-  const seasonal = campaigns.find((c) => c.type === "Seasonal") as
+  const seasonal = campaigns?.find((c) => c.type === "Seasonal") as
     | Extract<Campaign, { type: "Seasonal" }>
     | undefined;
 
@@ -200,7 +201,7 @@ export function calculateFinalPrice(
           : MapTitleDes[data.type],
     });
   }
-  console.log("DISCOUNT10", total);
+
   if (seasonal) {
     const data = applySeasonalDiscount(total, seasonal);
     total = data.total;

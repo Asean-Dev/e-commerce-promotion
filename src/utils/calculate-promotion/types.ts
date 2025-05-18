@@ -24,24 +24,29 @@ export interface SeasonalParams {
 
 export type CampaignType =
   | {
+      id: string;
       type: "CouponFixed";
       code: string;
       parameters: CouponFixedParams;
     }
   | {
+      id: string;
       type: "CouponPercentage";
       code: string;
       parameters: CouponPercentageParams;
     }
   | {
+      id: string;
       type: "OnTopCategory";
       parameters: OnTopCategoryParams;
     }
   | {
+      id: string;
       type: "OnTopPoints";
       parameters: OnTopPointsParams;
     }
   | {
+      id: string;
       type: "Seasonal";
       parameters: SeasonalParams;
     };
