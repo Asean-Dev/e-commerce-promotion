@@ -82,14 +82,10 @@ function applyOnTopDiscount(
 
       let basePrice = cartPrice;
 
-      console.log("debug cartPricecartPrice", cartPrice);
-
       if (coupon && coupon.type === "CouponFixed") {
         const proportionDiscount =
           (cartPrice / totalCartPrice) * coupon.parameters.amount;
         basePrice = Math.max(0, cartPrice - proportionDiscount);
-
-        console.log("debug basePrice", basePrice);
       }
 
       if (coupon && coupon.type === "CouponPercentage") {
@@ -126,8 +122,6 @@ function applySeasonalDiscount(
   total: number,
   campaign: Extract<Campaign, { type: "Seasonal" }>
 ): { total: number; amount: number; type: "Seasonal" } {
-  console.log("debug total", total);
-
   const { everyX, discountY } = campaign.parameters as SeasonalParams;
   const times = Math.floor(total / everyX);
 
@@ -145,8 +139,6 @@ export function calculateFinalPrice(
   couponCode?: string
 ): FinalPriceResult {
   let total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  console.log("debug total", total);
-  console.log("debug cart", cart);
 
   let DiscountDetail: DiscountDetailType[] = [];
 
@@ -171,7 +163,6 @@ export function calculateFinalPrice(
     | undefined;
 
   if (coupon) {
-    console.log("debug coupon");
     const data = applyCouponDiscount(total, coupon);
     total = data.total;
     if (data.type == "CouponPercentage") {
@@ -218,9 +209,6 @@ export function calculateFinalPrice(
       0
     );
     cartPrice = Math.max(0, cartPrice - findPrice);
-    console.log("debug cartPrice", cartPrice);
-    console.log("debug findPrice", findPrice);
-    console.log("debug total", total);
     const data = applySeasonalDiscount(cartPrice, seasonal);
     total = data.total;
     DiscountDetail.push({

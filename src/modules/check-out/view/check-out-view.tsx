@@ -45,8 +45,6 @@ export function CheckOutView() {
   const [couponCode, setCoupinCode] = useState("");
   const [myCampaigns, setMyCampaigns] = useState<CampaignType[] | undefined>();
 
-  console.log("debug myCampaigns", myCampaigns);
-
   const { totalQuantity, totalSummary } = useMemo(() => {
     return cartCheckOut.reduce(
       (acc, item) => {

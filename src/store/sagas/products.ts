@@ -53,8 +53,6 @@ function* fetchAddToCartSaga(
       quantity += item.quantity;
     });
 
-    console.log("cart quantity", cart.length);
-
     yield put(
       Actions.fetchAddToCartSuccess({
         data: { isAactive: data, quantity: quantity },

@@ -21,10 +21,6 @@ export function LayoutBar() {
     (state) => state.products.addToCart
   );
 
-  console.log("ripple", ripple);
-  console.log("isAactive", isAactive);
-  console.log("quantity", quantity);
-
   const handleAddCart = () => {
     ripple.onTrue();
     setTimeout(() => ripple.onFalse(), 500);

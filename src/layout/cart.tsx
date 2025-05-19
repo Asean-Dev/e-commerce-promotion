@@ -38,8 +38,6 @@ export function Cart({ onOpen, quantity, setQuantityStorageStorage }: Props) {
   const [selectedProductIds, setSelectedProductIds] = useState<string[]>([]);
   const { productsCart } = useAppSelector((state) => state.products);
 
-  console.log("productsCart", productsCart);
-
   useEffect(() => {
     dispatch(Action.fetchAllProductsCart());
   }, [dispatch, onOpen.value]);

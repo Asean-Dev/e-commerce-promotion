@@ -25,10 +25,8 @@ type CartCheckOut = {
 
 export function addToCartCheckOut(products: CartCheckOut[]): boolean {
   try {
-    // ตั้งเวลาหมดอายุใหม่ (10 นาที)
-    const expiresAt = Date.now() + 10 * 60 * 1000;
 
-    // เซ็ต cart ที่รับเข้ามาพร้อมเวลา
+    const expiresAt = Date.now() + 10 * 60 * 1000;
     localStorage.setItem(
       "_cart_check_out",
       JSON.stringify({ cart: products, expiresAt })
@@ -36,7 +34,7 @@ export function addToCartCheckOut(products: CartCheckOut[]): boolean {
 
     return true;
   } catch (error) {
-    console.error("❌ Failed to set cart checkout:", error);
+    console.error("Failed to set cart checkout:", error);
     return false;
   }
 }
@@ -77,7 +75,7 @@ export function removeAllFromCart(productId: string): boolean {
     localStorage.setItem("_cart", JSON.stringify(updatedCart));
     return true;
   } catch (error) {
-    console.error("❌ Failed to remove all from cart:", error);
+    console.error("Failed to remove all from cart:", error);
     return false;
   }
 }
