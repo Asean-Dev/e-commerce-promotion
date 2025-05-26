@@ -19,7 +19,7 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-## Visit the website ==> [Click here](https://playtorium-assignment-production.up.railway.app/)
+## Visit the website ==> [Click here](https://e-commerce-promotion.up.railway.app/)
 
 
 # Questions
